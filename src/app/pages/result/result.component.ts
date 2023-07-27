@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { SafeScript } from '@angular/platform-browser';
+import { SafeScript, Title } from '@angular/platform-browser';
 import { AlertifyService } from 'src/app/services/alertify.service';
 import { PaymentService } from 'src/app/services/payment.service';
 import { SessionService } from 'src/app/services/session.service';
@@ -25,6 +25,7 @@ export class ResultComponent implements OnInit{
     private renderer: Renderer2,
     private cookieService: CookieService,
     private acitvateRoute: ActivatedRoute,
+    private titleService: Title,
     @Inject(DOCUMENT) private document: Document
     
   ) {}
@@ -54,6 +55,7 @@ export class ResultComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.titleService.setTitle('Zekametre - Sonuçlar')
     this.customPrice = history.state.price
     this.customDescription = history.state.paymentStatus
 

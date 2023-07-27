@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AlertifyService } from 'src/app/services/alertify.service';
@@ -16,7 +17,8 @@ export class QuestionComponent implements OnInit{
     private calculateService: CalculateService, 
     private router: Router,
     private alertifyService: AlertifyService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private titleService: Title
     ){}
 
   questionIndex = 0
@@ -29,6 +31,7 @@ export class QuestionComponent implements OnInit{
   interval: any;
 
   ngOnInit(): void {
+    this.titleService.setTitle('Zekametre - Sorular')
     this.startCountdown();
   }
 

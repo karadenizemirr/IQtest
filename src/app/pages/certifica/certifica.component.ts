@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from 'src/app/services/api.service';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-certifica',
@@ -15,13 +16,15 @@ export class CertificaComponent implements OnInit{
 
   constructor(
     private activateRoute: ActivatedRoute,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private titleService: Title
   ) {}
 
   userId:any
   userData:any
 
   ngOnInit(): void {
+    this.titleService.setTitle('Sertifikam')
     this.activateRoute.params.subscribe((id) => {
       this.userId = id['id']
       

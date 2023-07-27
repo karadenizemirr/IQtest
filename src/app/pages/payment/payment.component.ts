@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from 'src/app/services/api.service';
@@ -17,7 +18,8 @@ export class PaymentComponent implements OnInit, OnDestroy{
     private calculateService: CalculateService,
     private apiService: ApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private titleService: Title
 
   ) {}
 
@@ -31,7 +33,7 @@ export class PaymentComponent implements OnInit, OnDestroy{
   shareUrl:string = ""
 
   ngOnInit(): void {
-    
+    this.titleService.setTitle('Zekametre - Ödeme')
     this.route.params.subscribe((params) => {
       this.userIdParams = params['id']
     })
