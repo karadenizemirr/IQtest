@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+$primary: #385A64;
+$secondary: #FF735C;
+$text: #FFD2D7;
+$light: #9288F8;
+
+
+@import "bootstrap/scss/bootstrap";
+@import "~@fortawesome/fontawesome-free/css/all.min.css";
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import "~animate.css/animate.css";
+@import "~alertifyjs/build/css/alertify.min.css";
+@import "~alertifyjs/build/css/themes/bootstrap.min.css";
+@import 'node_modules/ngx-sharebuttons/themes/default.scss';

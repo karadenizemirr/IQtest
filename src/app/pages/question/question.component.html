@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="row">
+        <div class="card p-4 shadow font-medium">
+            <div class="card-header bg-white d-flex justify-content-between">
+              <div class="back">
+                <button class="btn font-medium hover:bg-gray-200 border" (click)="previousQuestion()">
+                    <i class="mr-2 fas fa-chevron-left"></i>Önceki Soru
+                </button>
+              </div>
+              <div class="timer">
+                <p class="p-2 text-secondary">
+                    Kalan Süre: {{ minutes }}:{{ seconds < 10 ? '0' : '' }}{{ seconds }}
+                </p>
+              </div>
+              <div class="next">
+                <button class="btn font-medium hover:bg-gray-200 border" (click)="nextQuestion()" >
+                    Sonraki Soru<i class="ml-2 fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="{{questions[questionIndex].image}}" alt="">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="question text-xl font-extrabold">
+                            Soru {{questionIndex + 1}}: {{ questions[questionIndex].question }}
+                        </div>
+                        <div class="answers">
+                            <ul>
+                                <li class="animate__animated animate__backInDown uppercase"
+                                    style="animation-delay: 0ms;"
+                                    *ngFor="let answer of questions[questionIndex].answers | keyvalue; let i = index"
+                                    (click)="selectQuestion(answer, questionIndex)"
+                                    [style.color]="answer?.value?.color"
+                                    
+                                >
+                                  <i class="fas fa-check mr-2 text-success text-xl" *ngIf="onSelect && answer.key === selectedAnswer"></i>
+                                  {{ answer.value.text }}
+                                  <img *ngIf="answer.value && answer.value.image" [src]="answer.value.image" alt="">
+                                </li>
+                              </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

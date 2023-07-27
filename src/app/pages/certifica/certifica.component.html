@@ -1,0 +1,36 @@
+<div class="certificate-container ml-auto mr-auto" #content>
+    <div class="certificate">
+        <div class="water-mark-overlay"></div>
+        <div class="certificate-header">
+            <img src="assets/logo.png" class="logo" alt="">
+        </div>
+        <div class="certificate-body">
+
+            <p class="certificate-title uppercase"><strong>zekametre ıq seviye sonucu</strong></p>
+            <h1 class="uppercase font-bold">seviye testi başarı ile tamamlandı</h1>
+            <p class="student-name uppercase mt-3 ">{{userData.name}} {{userData.surname}}</p>
+            <div class="certificate-content">
+                <div class="about-certificate">
+                    <p class="uppercase mt-3">
+                        SAYIN {{userData.name}} {{userData.surname}} Seviye Puanınız: <span
+                            class="text-2xl">{{userData.score}}</span>
+                    </p>
+                </div>
+                <p class="topic-title mt-3">
+                    {{userData.result.description}}
+                </p>
+            </div>
+            <div class="footer mt-3">
+                <p>
+                    ID: {{userId}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="downloadButton text-center mb-3">
+    <button class="btn btn-secondary font-medium" (click)="convertToPdf()">
+        Sertifikayı İndir<i class="ml-2 fas fa-download"></i>
+    </button>
+</div>

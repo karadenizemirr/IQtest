@@ -1,0 +1,13 @@
+ul {
+    li {
+        margin-top: 15px;
+        padding: 10px;
+        border: 1px solid gray;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: 500ms ease-in-out;
+    }
+    li:hover {
+        background-color: rgb(207, 207, 207);
+    }
+}

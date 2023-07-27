@@ -1,0 +1,11 @@
+{
+  "/api/*": {
+    "target": "https://testapi.weepay.co",
+    "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}
