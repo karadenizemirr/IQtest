@@ -25,12 +25,11 @@ export class CertificaComponent implements OnInit{
 
   ngOnInit(): void {
     this.titleService.setTitle('Sertifikam')
-    this.activateRoute.params.subscribe((id) => {
+    this.activateRoute.params.subscribe(async (id) => {
       this.userId = id['id']
-      
-      this.apiService.getUserWithValue(this.userId).subscribe((user) => {
-        this.userData = user
-      })
+      this.userData = await this.apiService.getUserById(this.userId)
+
+      console.log(this.userData)
     })
   }
 

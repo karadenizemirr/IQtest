@@ -7,6 +7,7 @@ import { SessionService } from 'src/app/services/session.service';
 import { DOCUMENT } from '@angular/common';
 import { CookieService } from 'ngx-cookie-service';
 import { ActivatedRoute } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-result',
@@ -24,8 +25,8 @@ export class ResultComponent implements OnInit{
     private paymentService: PaymentService,
     private renderer: Renderer2,
     private cookieService: CookieService,
-    private acitvateRoute: ActivatedRoute,
     private titleService: Title,
+    private apiService: ApiService,
     @Inject(DOCUMENT) private document: Document
     
   ) {}
@@ -49,13 +50,16 @@ export class ResultComponent implements OnInit{
       identifyNumber: [''],
       city: ['',],
       price: [String(this.customPrice)],
-      productName: [String(this.customDescription)]
+      productName: [String(this.customDescription)],
+      certificate:[false]
 
     })
   }
 
   ngOnInit(): void {
-    this.titleService.setTitle('Zekametre - Sonuçlar')
+    this.titleService.setTitle('Zekametre - Ödeme Oluştur')
+
+    
     this.customPrice = history.state.price
     this.customDescription = history.state.paymentStatus
 
@@ -84,8 +88,9 @@ export class ResultComponent implements OnInit{
           const scriptText = this.renderer.createText(match[1]);
           this.renderer.appendChild(scriptElement, scriptText);
           this.renderer.appendChild(this.document.head, scriptElement);
-          // Save Cookie
-          this.cookieService.set('payment', JSON.stringify(this.paymentData))
+          // Save Data
+          const id = this.sessionService.getSettionData('key')
+          this.apiService.setAddUser(this.paymentData, id)
         }
         
       }

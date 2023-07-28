@@ -20,9 +20,9 @@ export class PaymentService {
     async createPaymentForm(paymentData: any){
         const endpointData = {
             Auth: {
-                bayiId: '2',
-                apiKey: 'test',
-                secretKey: 'test'
+                bayiId: environment.weepay.bayiId,
+                apiKey: environment.weepay.apiKey,
+                secretKey: environment.weepay.secretKey
             },
             Data: {
                 orderId: parseInt(uuidv4().replace(/\D/g, ''), 10),
@@ -32,7 +32,7 @@ export class PaymentService {
                 ipAddress: '192.168.1.1',
                 installmentNumber: 1,
                 description: 'IQ Test Ücreti',
-                callBackUrl: environment.apiHost + '/paymentResult'
+                callBackUrl: environment.expressServer + '/paymentResult'
             },
             Customer: {
                 customerId: uuidv4(),
@@ -69,7 +69,7 @@ export class PaymentService {
         };
 
         const url = "/api/Payment/PaymentCreate"
-        return (await axios.post(url, endpointData)).data
+        return (await axios.post(environment.apiURl, endpointData)).data
     }
 
 }

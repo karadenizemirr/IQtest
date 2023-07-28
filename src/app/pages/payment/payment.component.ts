@@ -1,89 +1,63 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { ApiService } from 'src/app/services/api.service';
 import { CalculateService } from 'src/app/services/calculate.service';
+import { SessionService } from 'src/app/services/session.service';
 import { environment } from 'src/environments/environment';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss']
 })
-export class PaymentComponent implements OnInit, OnDestroy{
+export class PaymentComponent implements OnInit{
   constructor(
     private cookieService: CookieService,
     private calculateService: CalculateService,
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router,
-    private titleService: Title
+    private titleService: Title,
+    private sessionService: SessionService
 
   ) {}
 
   paymentResult:any
   status!: boolean
-  score: number = 0
   scoreResult: any
-  paymentData: any
-  userId:any = uuidv4()
-  userIdParams: any
+  userId:any
   shareUrl:string = ""
+  endUserData:any
+  certificate: boolean = false
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.titleService.setTitle('Zekametre - Ödeme')
+    
     this.route.params.subscribe((params) => {
-      this.userIdParams = params['id']
+      this.userId = params['id'] || this.sessionService.getSettionData('key')
     })
+    this.shareUrl = environment.angularServer + "/payment/" + this.userId
+    
+    if (!this.sessionService.getSettionData('key') && !this.userId) this.router.navigate(['/']);
 
-    if (!this.userIdParams){
-      this.paymentResult = JSON.parse(this.cookieService.get('paymentResult'))
-      this.score = Number(this.cookieService.get('userR'))
-      this.scoreResult = this.calculateService.result_calculate(Number(this.score))
-      this.paymentData = JSON.parse(this.cookieService.get('payment'))
+    this.paymentResult = JSON.parse(this.cookieService.get('paymentResult'))
+    this.status = this.paymentResult.status === 'success';
+    // Get User Data
+    const userData:any =await this.getUserData(this.userId)
 
-      if (this.paymentResult.paymentStatus === 'true'){
-        this.status = true
-
-        
-
-        // Database Save
-        const saveData = {
-          "name": this.paymentData.name,
-          "surname": this.paymentData.surname,
-          "gsmNumber": this.paymentData.gsmNumber,
-          "email": this.paymentData.email,
-          "indetitiyNumber": this.paymentData.identifyNumber,
-          "payment": this.paymentResult.status,
-          "certificate": false,
-          "score": this.score,
-          "result": this.scoreResult,
-          "paymentId": this.paymentResult.paymentId
-        }
-
-        if (this.paymentData.productName === "certificate") {
-          saveData.certificate = true;
-        }
-        
-        this.apiService.saveUserResult(saveData, this.userId)
-        this.shareUrl = environment.host + '/payment/' + this.userId
-        // this.cookieService.delete('paymentResult');
-        // this.cookieService.delete('payment')
-        // this.cookieService.delete('userR')
-      }else {
-        this.status = false
-      }
-    }else {
-      this.apiService.getUserWithValue(this.userIdParams).subscribe(userData => {
-        if (userData.payment === 'success'){
-          this.status = true
-        }
-        this.score = userData.score
-        this.scoreResult = userData.result
-      })
+    this.scoreResult = this.calculateService.result_calculate(userData?.score)
+    this.certificate = userData.productName === 'certificate'
+    const saveUserData = {
+      paymentResult: this.paymentResult,
+      scoreResult: this.scoreResult
     }
+    
+    this.endUserData = await this.apiService.setAddUser(saveUserData, this.userId)
+    this.sessionService.removeSession('key')
+
+    
   }
 
   buyCertificate(){
@@ -94,9 +68,8 @@ export class PaymentComponent implements OnInit, OnDestroy{
     this.router.navigate(['certificate/'+this.userId])
   }
 
-  ngOnDestroy(): void {
-    this.cookieService.delete('paymentResult');
-    this.cookieService.delete('payment')
-    this.cookieService.delete('userR')
+  async getUserData(id:string){
+    return await this.apiService.getUserById(id)
   }
+
 }

@@ -16,30 +16,27 @@ export class ResultTableComponent implements OnInit{
     private alertifySerivce: AlertifyService
   ) {}
 
-  userData: { name: string,surname:string, score: number }[] = [];
+  userData: any[] = []
   inputValue!: string;
   
 
   ngOnInit(): void {
-
     this.getAllUser()
+    console.log(this.userData)
   }
 
-  getAllUser(){
-    this.apiService.getAllUser().subscribe((users) => {
-      this.userData = Object.keys(users).map(key => users[key])
+  async getAllUser(){
+
+    const response = await this.apiService.getAllUser()
+    response?.forEach((user:any) => {
+      this.userData.push(user.data())
     })
   }
 
 
-  handleButtonClick() {
-    console.log(this.inputValue);
+  async handleButtonClick() {
     if (this.inputValue){
-
-      this.apiService.getUserWithValue(this.inputValue).subscribe((users) => {
-        this.userData = Object.keys(users).map(key => users[key])
-      })
-
+      this.userData = [await this.apiService.getUserById(this.inputValue)]
     }else{
       this.getAllUser()
       this.alertifySerivce.danger('ID Bilgisi belirtiniz')

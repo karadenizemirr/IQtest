@@ -3,7 +3,9 @@ import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { AlertifyService } from 'src/app/services/alertify.service';
+import { ApiService } from 'src/app/services/api.service';
 import { CalculateService } from 'src/app/services/calculate.service';
+import { SessionService } from 'src/app/services/session.service';
 import questions from 'src/app/types/questions.types';
 
 @Component({
@@ -17,8 +19,9 @@ export class QuestionComponent implements OnInit{
     private calculateService: CalculateService, 
     private router: Router,
     private alertifyService: AlertifyService,
-    private cookieService: CookieService,
-    private titleService: Title
+    private titleService: Title,
+    private apiService: ApiService,
+    private sessionService: SessionService
     ){}
 
   questionIndex = 0
@@ -64,7 +67,8 @@ export class QuestionComponent implements OnInit{
         this.selectedAnswer = ""
       }else{
         const score = this.calculateService.score_calculate(this.allAnswers)
-        this.cookieService.set("userR", String(score))
+        const id = this.sessionService.getSettionData('key')
+        this.apiService.setAddUser({"score": score}, id)
         this.router.navigate(['result'], {state: {"paymentStatus": "result", "price": "39"}})
       }
 

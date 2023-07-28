@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertifyService } from 'src/app/services/alertify.service';
+import { ApiService } from 'src/app/services/api.service';
 import { SessionService } from 'src/app/services/session.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class VerifyComponent implements OnInit{
     private formBuilder: FormBuilder,
     private sessionService: SessionService,
     private router: Router,
-    private alertifyService: AlertifyService
+    private alertifyService: AlertifyService,
+    private apiService: ApiService
   ) { }
 
   verifyForm!: FormGroup
@@ -28,10 +30,11 @@ export class VerifyComponent implements OnInit{
     })
   }
 
-  getTestPage(){
+  async getTestPage(){
     if (this.verifyForm.valid){
       this.verfiyData = Object.assign({}, this.verifyForm.value)
-      this.sessionService.setSettionData("user", {"name": this.verfiyData.name, "surname": this.verfiyData.surname, "verify": true})
+      const savedata = await this.apiService.addUser({"name": this.verfiyData.name, "surname": this.verfiyData.surname, "verify": true})
+      this.sessionService.setSettionData('key', savedata?.id)
       this.alertifyService.success('Kayıt başarılı')
       this.router.navigate(['questions'])
     }

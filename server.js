@@ -17,7 +17,7 @@ app.get('/*', (req, res) =>
 
 app.post('/paymentResult', (req,res) => {
     res.cookie('paymentResult', JSON.stringify(req.body))
-    res.redirect('http://localhost:4200/payment')
+    res.redirect('http://localhost:8080/payment')
 })
 
 // Start the app by listening on the default Heroku port

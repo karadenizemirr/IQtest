@@ -1,87 +1,63 @@
 import { Injectable } from "@angular/core";
 import { FirebaseService } from "./database/connect.service";
-import { getDatabase, onValue, ref, set } from "firebase/database";
-import { Observable } from "rxjs";
+import { addDoc, collection, doc, getDoc, getDocFromCache, getDocs, setDoc } from "firebase/firestore";
 
 @Injectable({
-    providedIn: "root"
+  providedIn: "root"
 })
 
 
 export class ApiService {
-    constructor(
-        private firebaseService: FirebaseService
-    ){}
 
-    saveUserResult(userData:any, userId:any){
-        try{
-            const database = getDatabase(this.firebaseService.app())
-            
+  private db:any;
 
-            set(ref(database, "users/" + userId), userData)
-                .then(() => {
-                    console.log('kayıt başarıyla eklendi')
-                })
-                .catch((err) => {
-                    console.log('kayıt eklenmedi')
-                })
+  constructor(
+    private firebaseService: FirebaseService
+  ) {
+    this.db = this.firebaseService.getFirestore()
+  }
 
-        }catch(err){
-            console.log('Error')
-        }
+
+  async addUser(data:any){
+    try{
+      return await addDoc(collection(this.db, 'users'), data)
+    }catch(err){
+      return null
     }
+  }
 
-    getAllUser(): Observable<any> {
-        const database = getDatabase(this.firebaseService.app());
-        const usersRef = ref(database, "users/");
-    
-        return new Observable<any>((observer) => {
-          const unsubscribe = onValue(usersRef, (snapshot) => {
-            const users = snapshot.val();
-            observer.next(users);
-          }, (error) => {
-            observer.error(error);
-          });
-    
-          return () => {
-            unsubscribe();
-          };
-        });
+  async setAddUser(data:any, id:string){
+    try{
+
+      const docRef = doc(this.db, 'users', id);
+      await setDoc(docRef, data, { merge: true });
+      const snapshot = await getDoc(docRef);
+      const savedData = snapshot.data();
+
+      return savedData
+
+    }catch(err){
+      return null
     }
+  }
 
-    getUserWithValue(ID:string){
-        const database = getDatabase(this.firebaseService.app());
-        const usersRef = ref(database, "users/" + ID);
-    
-        return new Observable<any>((observer) => {
-          const unsubscribe = onValue(usersRef, (snapshot) => {
-            const users = snapshot.val();
-            observer.next(users);
-          }, (error) => {
-            observer.error(error);
-          });
-    
-          return () => {
-            unsubscribe();
-          };
-        });
+  async getUserById(id:string){
+    try{
+      
+      return (await getDoc(doc(this.db, 'users', id)))?.data()
+
+    }catch(err){
+      return null;
     }
+  }
 
-    certificateUpdate(ID:string){
-      const database = getDatabase(this.firebaseService.app())
-      const usersRef = ref(database, "users/" + ID);
+  async getAllUser(){
+    try{
+      
+      return await getDocs(collection(this.db,'users'))
 
-      return new Observable<any>((observer) => {
-        const unsubscribe = onValue(usersRef, (snapshot) => {
-          const users = snapshot.val();
-          users.certificate = true
-          observer.next(users);
-        }, (error) => {
-          observer.error(error);
-        });
-
-        return unsubscribe();
-      })
+    }catch(err){
+      return null
     }
-
+  }
 }
