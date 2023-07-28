@@ -2,7 +2,7 @@ export const environment = {
     production: false,
     apiURl: "https://testapi.weepay.co/Payment/PaymentCreate", // Weepay Api
     angularServer: "http://localhost:8080", // Angular server
-    expressServer: "http://localhost:8080", // Express server 
+    expressServer: "http://https://iqtest-b66371e15b94.herokuapp.com:8080", // Express server 
     weepay: {
         bayiId: "2",
         apiKey: "test",
