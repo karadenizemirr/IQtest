@@ -40,7 +40,7 @@ export class PaymentComponent implements OnInit{
     })
     this.shareUrl = environment.angularServer + "/payment/" + this.userId
     
-    if (!this.sessionService.getSettionData('key') && !this.userId) this.router.navigate(['/']);
+    if (!this.userId) this.router.navigate(['/']);
 
     this.paymentResult = JSON.parse(this.cookieService.get('paymentResult'))
     this.status = this.paymentResult.status === 'success';
@@ -61,7 +61,9 @@ export class PaymentComponent implements OnInit{
   }
 
   buyCertificate(){
+    this.sessionService.setSettionData('key', this.userId)
     this.router.navigate(['result'], {state: {"paymentStatus": "certificate", "price": "149"}})
+    
   }
 
   getCertificate(){

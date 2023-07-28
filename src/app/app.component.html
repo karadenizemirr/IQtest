@@ -1,19 +1,20 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-none p-3 border-2 ">
-  <a class="navbar-brand logo text-3xl font-extrabold uppercase text-primary" href="/"><span class="text-secondary">zeka</span>metre</a>
+  <a class="navbar-brand logo text-3xl font-extrabold uppercase text-primary" href="/"><span
+      class="text-secondary">zeka</span>metre</a>
   <div class="ml-auto">
     <ul class="navbar-nav font-bold">
       <li class="nav-item">
-        <a class="nav-link" href="#">Biz Kimiz</a>
+        <a class="nav-link" href="#"><i class="fas fa-info-circle mr-2"></i>Biz Kimiz</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="result-table">Sonuçlar</a>
+        <a class="nav-link" href="result-table"><i class="fas fa-check-circle mr-2"></i>Sonuçlar</a>
+      </li>
+      <li class="nav-item" (click)="openModal()" >
+        <button class="nav-link"><i class="fas fa-search mr-2"></i>Sertifika Sorgula</button>
       </li>
     </ul>
   </div>
 </nav>
-
-
-
 <div class="container-fluid p-3">
   <div class="wrapper">
     <router-outlet></router-outlet>
@@ -24,7 +25,7 @@
     <div class="row ">
       <div class="col-md-12">
         <div class="social">
-          <div >
+          <div>
             <div>
               <i class="fab fa-twitter"></i>
               <i class="fab fa-facebook"></i>
@@ -59,4 +60,24 @@
   </div>
 </div>
 
+<div class="modal-container  animate__animated animate__bounceInLeft" *ngIf="isSearchModal">
+  <div class="modal-overlay" (click)="closeModal()"></div>
+  <div class="modal-content text-center">
+    <!-- Modal içeriği buraya gelecek -->
+    <h2 class="text-xl text-secondary font-extrabold" >Sertifika ID Giriniz</h2>
 
+    <div class="row mr-auto ml-auto mt-4 mb-4" style="width: 50%;">
+      <div class="col">
+          <div class="input-group mb-3">
+              <input type="text" class="form-control" placeholder="ID" aria-describedby="button-addon2" [(ngModel)]="userId" >
+              <button class="btn btn-outline-secondary mr-2" type="button" id="button-addon2" (click)="searchCertificate()" >
+                <i class="fa fa-search mr-2"></i>Ara
+              </button>
+              <button class="btn btn-outline-primary mr-2" type="button" id="button-addon2" (click)="closeModal()">
+                <i class="fas fa-times mr-2"></i>Kapat
+              </button>
+            </div>
+      </div>
+  </div>
+  </div>
+</div>
