@@ -1,20 +1,34 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-none p-3 border-2 ">
-  <a class="navbar-brand logo text-3xl font-extrabold uppercase text-primary" href="/"><span
-      class="text-secondary">zeka</span>metre</a>
-  <div class="ml-auto">
-    <ul class="navbar-nav font-bold">
-      <li class="nav-item">
-        <a class="nav-link" href="#"><i class="fas fa-info-circle mr-2"></i>Biz Kimiz</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="result-table"><i class="fas fa-check-circle mr-2"></i>Sonuçlar</a>
-      </li>
-      <li class="nav-item" (click)="openModal()" >
-        <button class="nav-link"><i class="fas fa-search mr-2"></i>Sertifika Sorgula</button>
-      </li>
-    </ul>
+<nav class="nav p-3">
+  <input type="checkbox" id="nav-check">
+  <div class="nav-header">
+    <div class="nav-title">
+      <a class="navbar-brand logo text-3xl font-extrabold uppercase mr-auto" href="/"><span
+        class="text-secondary">zeka</span>metre</a>
+    </div>
   </div>
+  <div class="nav-btn">
+    <label for="nav-check">
+      <span></span>
+      <span></span>
+      <span></span>
+    </label>
+  </div>
+  
+  <ul class="nav-list font-bold flex flex-wrap">
+    <li class="flex flex-col">
+      <a class="" href="#"><i class="fas fa-info-circle mr-2"></i>Biz Kimiz</a>
+    </li>
+    <li class=" flex flex-col">
+      <a class="" href="result-table"><i class="fas fa-check-circle mr-2"></i>Sonuçlar</a>
+    </li>
+    <li class=" flex flex-col" (click)="openModal()">
+      <button class="text-white"><i class="fas fa-search mr-2"></i>Sertifika Sorgula</button>
+    </li>
+  </ul>
 </nav>
+
+
+
 <div class="container-fluid p-3">
   <div class="wrapper">
     <router-outlet></router-outlet>
